@@ -1,15 +1,15 @@
 package com.workshop.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.workshop.db.entity.Bicycle;
-import com.workshop.db.entity.Frame;
-import com.workshop.db.repository.FrameRepository;
-import com.workshop.db.repository.PartRepositories;
-import com.workshop.db.repository.PartSearchRepository;
-import com.workshop.db.specification.PartSpec;
-import com.workshop.db.specification.PartQuerySpecification;
-import com.workshop.db.specification.Specifications;
-import com.workshop.enums.PartType;
+import com.workshop.model.entity.Bicycle;
+import com.workshop.model.entity.Frame;
+import com.workshop.model.repository.FrameRepository;
+import com.workshop.model.repository.PartRepositories;
+import com.workshop.model.repository.PartSearchRepository;
+import com.workshop.model.specification.PartSpec;
+import com.workshop.model.specification.PartQuerySpecification;
+import com.workshop.model.specification.Specifications;
+import com.workshop.model.enums.PartType;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.data.domain.Pageable;
@@ -17,11 +17,11 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Method;
 
-import static com.workshop.db.specification.PartSpecifications.PART_SPEC_MAP;
+import static com.workshop.model.specification.PartSpecifications.PART_SPEC_MAP;
 
 /**
  * Manages parts added by the user

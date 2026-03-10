@@ -1,24 +1,24 @@
 package com.workshop.service;
 
-import com.workshop.db.entity.PartView;
-import com.workshop.db.repository.BasicPartRepository;
-import com.workshop.db.repository.PartSearchRepository;
-import com.workshop.db.specification.PartSpec;
-import com.workshop.enums.PartType;
+import com.workshop.model.entity.PartView;
+import com.workshop.model.repository.BasicPartRepository;
+import com.workshop.model.repository.PartSearchRepository;
+import com.workshop.model.specification.PartSpec;
+import com.workshop.model.enums.PartType;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.workshop.db.entity.BicyclePart;
-import com.workshop.db.repository.BicyclePartRepository;
+import com.workshop.model.entity.BicyclePart;
+import com.workshop.model.repository.BicyclePartRepository;
 
-import com.workshop.db.specification.PartQuerySpecification;
+import com.workshop.model.specification.PartQuerySpecification;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 
-import static com.workshop.db.specification.PartSpecifications.PART_SPEC_MAP;
+import static com.workshop.model.specification.PartSpecifications.PART_SPEC_MAP;
 import static com.workshop.utils.PartNamingUtils.createProductId;
 import static com.workshop.utils.SerializationUtils.deserializeEntity;
 

@@ -1,7 +1,7 @@
 package com.workshop.controller;
 
 import com.workshop.component.BicycleTypePropertyEditor;
-import com.workshop.enums.PartType;
+import com.workshop.model.enums.PartType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.WebDataBinder;

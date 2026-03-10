@@ -1,85 +1,73 @@
 package com.workshop.config.security;
 
+import com.workshop.config.security.component.Http401UnauthorizedEntryPoint;
+import com.workshop.config.security.component.JwtAuthenticationProvider;
+import com.workshop.config.security.component.JwtTokenSettings;
+import com.workshop.config.security.component.filters.JwtAuthorizationFilter;
+import com.workshop.config.security.component.filters.JwtUsernamePasswordAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
-import com.workshop.config.security.component.Http401UnauthorizedEntryPoint;
-import com.workshop.config.security.component.JwtAuthenticationProvider;
-import com.workshop.config.security.component.filters.JwtAuthorizationFilter;
-import com.workshop.config.security.component.JwtTokenSettings;
-import com.workshop.config.security.component.filters.JwtUsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.SecurityFilterChain;
 
 import java.util.Map;
 
 @Configuration
+@EnableWebSecurity
+@EnableMethodSecurity
 @RequiredArgsConstructor
-@EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
 
     private final JwtTokenSettings jwtTokenSettings;
     private final JwtAuthenticationProvider jwtAuthenticationProvider;
     private final Http401UnauthorizedEntryPoint authEntryPoint;
 
-    //@Value("${security.login.force_https}")
-    private boolean loginForceHttps = false;
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        AuthenticationManager authManager = new ProviderManager(jwtAuthenticationProvider);
 
         http
-                .cors().and()
-                .csrf().disable()
-                .addFilter(new JwtUsernamePasswordAuthenticationFilter(authenticationManager()))
-                .addFilter(new JwtAuthorizationFilter(authenticationManager(), jwtTokenSettings))
-                .authorizeRequests()
-                    .mvcMatchers("/authentication/login").permitAll()
-                    .mvcMatchers("/user/register").permitAll()
-                    .mvcMatchers("/**").permitAll()
-                    .mvcMatchers("/bicycles/**").hasAnyRole("ADMIN")
-                    .mvcMatchers("/system/health").hasAnyRole("EMPLOYEE")
-                    .anyRequest().authenticated()
-                    .and()
-                .formLogin()
-                    .permitAll()
-                    .and()
-                .logout()
-                    .permitAll()
-                    .and()
-                .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                    .and()
-                .exceptionHandling().authenticationEntryPoint(authEntryPoint);
+                .cors(Customizer.withDefaults())
+                .csrf(AbstractHttpConfigurer::disable)
+                .addFilter(new JwtUsernamePasswordAuthenticationFilter(authManager))
+                .addFilter(new JwtAuthorizationFilter(authManager, jwtTokenSettings))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/authentication/login").permitAll()
+                        .requestMatchers("/user/register").permitAll()
+                        .requestMatchers("/**").permitAll()
+                        .requestMatchers("/bicycles/**").hasAnyRole("ADMIN")
+                        .requestMatchers("/system/health").hasAnyRole("EMPLOYEE")
+                        .anyRequest().authenticated()
+                )
+                .formLogin(login -> login.permitAll())
+                .logout(logout -> logout.permitAll())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(ex -> ex.authenticationEntryPoint(authEntryPoint));
 
+        return http.build();
     }
 
-    @Override
-    public void configure(WebSecurity web) {
-        web.ignoring()
-                .mvcMatchers("/webjars/springfox-swagger-ui/**")
-                .mvcMatchers("/swagger-ui.html/**")
-                .mvcMatchers("/swagger-resources/**")
-                .mvcMatchers("/css/**");
-    }
-
-    private LoginUrlAuthenticationEntryPoint getLoginUrlAuthenticationEntryPoint() {
-        final LoginUrlAuthenticationEntryPoint loginUrlAuthenticationEntryPoint = new LoginUrlAuthenticationEntryPoint("/login");
-        loginUrlAuthenticationEntryPoint.setForceHttps(loginForceHttps);
-        return loginUrlAuthenticationEntryPoint;
-    }
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) {
-        auth.authenticationProvider(jwtAuthenticationProvider);
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return web -> web.ignoring()
+                .requestMatchers(
+                        "/webjars/springfox-swagger-ui/**",
+                        "/swagger-ui.html/**",
+                        "/swagger-resources/**",
+                        "/css/**"
+                );
     }
 
     @Bean

@@ -8,12 +8,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import com.workshop.db.dto.BicycleDto;
-import com.workshop.db.entity.Bicycle;
+import com.workshop.model.dto.BicycleDto;
+import com.workshop.model.entity.Bicycle;
 
-import com.workshop.db.repository.BicycleRepository;
+import com.workshop.model.repository.BicycleRepository;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 
 /** Manages bicycles added by the user */
 

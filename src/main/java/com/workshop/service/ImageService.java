@@ -1,13 +1,13 @@
 package com.workshop.service;
 
-import com.workshop.db.entity.Image;
-import com.workshop.db.repository.ImageRepository;
+import com.workshop.model.entity.Image;
+import com.workshop.model.repository.ImageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 
 @Service
 @RequiredArgsConstructor

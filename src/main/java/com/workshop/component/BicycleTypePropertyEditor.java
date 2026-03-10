@@ -1,6 +1,6 @@
 package com.workshop.component;
 
-import com.workshop.enums.PartType;
+import com.workshop.model.enums.PartType;
 import org.springframework.util.StringUtils;
 
 import java.beans.PropertyEditorSupport;
@@ -22,7 +22,7 @@ public class BicycleTypePropertyEditor extends PropertyEditorSupport {
 
     @Override
     public void setAsText(String text) throws IllegalArgumentException {
-        if (StringUtils.isEmpty(text)) {
+        if (!StringUtils.hasText(text)) {
             setValue(null);
             return;
         }

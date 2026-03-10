@@ -11,6 +11,6 @@ public final class JwtTokenConfig {
     public static final String PARTNER_CLAIM_NAME = "partner";
 
     public static Algorithm getJwtSignAlgorithm(String secret) {
-        return Algorithm.HMAC512(secret.getBytes());
+        return Algorithm.HMAC512(secret);
     }
 }

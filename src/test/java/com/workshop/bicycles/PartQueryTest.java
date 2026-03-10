@@ -1,9 +1,5 @@
 package com.workshop.bicycles;
 
-import com.workshop.db.specification.PartQueryBuilder;
-import com.workshop.enums.PartType;
-import org.junit.jupiter.api.Test;
-
 public class PartQueryTest {
 
 //    @Test

@@ -1,13 +1,10 @@
 package com.workshop.utils;
 
-import com.workshop.enums.PartType;
+import com.workshop.model.enums.PartType;
 import lombok.experimental.UtilityClass;
 import org.springframework.util.StringUtils;
-import com.workshop.db.entity.BicyclePart;
-import com.workshop.db.entity.Frame;
-import com.workshop.db.entity.Fork;
-
-import java.util.Map;
+import com.workshop.model.entity.BicyclePart;
+import com.workshop.model.entity.Frame;
 
 @UtilityClass
 public class PartNamingUtils {

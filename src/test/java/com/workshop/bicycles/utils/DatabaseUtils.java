@@ -3,14 +3,13 @@ package com.workshop.bicycles.utils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.workshop.bicycles.IntegrationTest;
-import com.workshop.enums.PartType;
+import com.workshop.model.enums.PartType;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import com.workshop.db.entity.BicyclePart;
-import com.workshop.db.entity.Frame;
-import com.workshop.db.repository.BicyclePartRepository;
+import com.workshop.model.entity.BicyclePart;
+import com.workshop.model.repository.BicyclePartRepository;
 
 import java.nio.file.Paths;
 import java.util.List;

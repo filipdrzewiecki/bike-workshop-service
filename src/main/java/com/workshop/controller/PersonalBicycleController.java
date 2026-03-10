@@ -1,15 +1,15 @@
 package com.workshop.controller;
 
 import com.workshop.component.BicycleTypePropertyEditor;
-import com.workshop.enums.PartType;
+import com.workshop.model.enums.PartType;
 import com.workshop.service.PersonalBicycleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import com.workshop.db.dto.BicycleDto;
-import com.workshop.db.entity.Bicycle;
+import com.workshop.model.dto.BicycleDto;
+import com.workshop.model.entity.Bicycle;
 
 import java.util.List;
 
